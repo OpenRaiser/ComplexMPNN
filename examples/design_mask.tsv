@@ -1,0 +1,7 @@
+# One rule per line: <input prefix>	<chain>	<positions>
+# Positions are 1-based along the chain, as single numbers or ranges, and only
+# these are designed. Everything else keeps its own sequence as context.
+# The prefix matches the start of the input file stem, so 1jid matches
+# 1jid.pdb and 1jid_complex.pdb alike.
+1jid	A	12,15,18-24
+1jid	B	3-9

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ComplexMPNN</title>
+<meta name="description" content="Scalable and universal biomolecular inverse folding: one model designs protein, RNA and DNA sequences for a backbone, conditioned on its partners, ligands and metal ions.">
+<meta property="og:title" content="ComplexMPNN: scalable and universal biomolecular inverse folding">
+<meta property="og:description" content="One model designs protein, RNA and DNA sequences for a backbone, conditioned on its partners, ligands and metal ions.">
+<meta property="og:image" content="static/images/teaser.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <h1 class="title pub-title">Scalable and universal biomolecular<br>inverse folding with ComplexMPNN</h1>
+
+      <div class="authors">
+        <span class="author"><a href="https://github.com/forrest-yijie-zhang">Yijie Zhang</a><sup>1,6,&dagger;</sup></span>
+        <span class="author">Pengcheng Li<sup>3,&dagger;</sup></span>
+        <span class="author">Yanyi Wang<sup>8,&dagger;</sup></span>
+        <span class="author">Lingdong Shen<sup>2,&dagger;</sup></span>
+        <span class="author">Tongyue Xu<sup>11,12,&dagger;</sup></span>
+        <span class="author">Wenjie Yan<sup>3,&dagger;</sup></span>
+        <span class="author">Qi Liu<sup>2</sup></span>
+        <span class="author">Dongxu Zhang<sup>3</sup></span>
+        <span class="author">Jue Wang<sup>7</sup></span>
+        <span class="author">Tang Liu<sup>10</sup></span>
+        <span class="author">Shaohua Ma<sup>3</sup></span>
+        <span class="author">Asher Qin<sup>5</sup></span>
+        <span class="author">Odin Zhang<sup>13</sup></span>
+        <span class="author">Conghui He<sup>4</sup></span>
+        <span class="author">Hongmei Wang<sup>8,9,*</sup></span>
+        <span class="author">Jinren Ni<sup>2,*</sup></span>
+        <span class="author">Mathieu Blanchette<sup>1,6,*</sup></span>
+        <span class="author">Cheng Tan<sup>5,*</sup></span>
+      </div>
+
+      <div class="affils">
+        <span><sup>1</sup>McGill University</span>
+        <span><sup>2</sup>Peking University</span>
+        <span><sup>3</sup>Tsinghua University</span>
+        <span><sup>4</sup>Shanghai Artificial Intelligence Laboratory</span>
+        <span><sup>5</sup>Tencent</span>
+        <span><sup>6</sup>Mila &ndash; Quebec AI Institute</span>
+        <span><sup>7</sup>Zhejiang University</span>
+        <span><sup>8</sup>University of Chinese Academy of Sciences</span>
+        <span><sup>9</sup>Beijing Institute for Stem Cell and Regenerative Medicine</span>
+        <span><sup>10</sup>Shenzhen University</span>
+        <span><sup>11</sup>Tongji University</span>
+        <span><sup>12</sup>Shanghai Innovation Institute</span>
+        <span><sup>13</sup>The Chinese University of Hong Kong</span>
+      </div>
+      <p class="marks"><sup>&dagger;</sup>Equal contribution &nbsp;&middot;&nbsp; <sup>*</sup>Corresponding authors</p>
+
+      <div class="buttons-row">
+        <!-- Add the paper link here once it is public:
+        <a class="pub-button" href="PAPER_URL"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M9.5 1H4a1.5 1.5 0 0 0-1.5 1.5v11A1.5 1.5 0 0 0 4 15h8a1.5 1.5 0 0 0 1.5-1.5V5L9.5 1Zm0 1.6L11.9 5H10a.5.5 0 0 1-.5-.5V2.6ZM5 8h6v1.1H5V8Zm0 2.4h6v1.1H5v-1.1Z"/></svg> Paper</a> -->
+        <a class="pub-button" href="https://github.com/OpenRaiser/ComplexMPNN"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.011.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> Code</a>
+        <a class="pub-button" href="https://www.modelscope.cn/datasets/yijiezhang/FineBio-Inv"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1c3.3 0 6 .9 6 2v10c0 1.1-2.7 2-6 2s-6-.9-6-2V3c0-1.1 2.7-2 6-2Zm0 1.2c-2.8 0-4.8.7-4.8 1.2S5.2 4.6 8 4.6s4.8-.7 4.8-1.2S10.8 2.2 8 2.2ZM3.2 5.6v2.1c0 .5 2 1.2 4.8 1.2s4.8-.7 4.8-1.2V5.6c-1.2.6-3 .8-4.8.8s-3.6-.2-4.8-.8Zm0 3.8V13c0 .5 2 1.2 4.8 1.2s4.8-.7 4.8-1.2V9.4c-1.2.6-3 .8-4.8.8s-3.6-.2-4.8-.8Z"/></svg> Data</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <h2 class="sec-title">Generation</h2>
+    <p class="lead">Human SRP19 bound to helix 6 of SRP RNA, with two magnesium ions included as context. Generation starts with all designable positions masked. At each step the decoder predicts amino-acid and nucleotide probabilities for every designable position, fills a selection of the masked ones by sampling from those probabilities, and masks a few filled positions again so that their identities can be revised in later steps. The protein and the RNA are updated together, so the amino acid or nucleotide chosen at one position becomes part of the context for predicting its neighbors, including those on the partner chain.</p>
+
+    <div class="flowdemo" id="flowdemo">
+      <div class="flow-head">
+        <span class="flow-t">t = <b id="flow-t">0.00</b></span>
+        <span class="flow-stat"><b id="flow-done">0</b> of <b id="flow-tot">0</b> filled</span>
+      </div>
+      <div class="flow-split">
+        <div class="flow-struct" id="flow-struct"></div>
+        <div class="flow-seq">
+          <div class="flow-row"><span class="flow-label">Protein</span><span class="flow-cells" id="flow-p"></span></div>
+          <div class="flow-row"><span class="flow-label">RNA</span><span class="flow-cells" id="flow-n"></span></div>
+          <div class="flow-key">
+            <span><i class="k-mask"></i>masked</span>
+            <span><i class="k-new"></i>filled this step</span>
+            <span><i class="k-set"></i>filled</span>
+            <span><i class="k-re"></i>masked again</span>
+            <span><i class="k-ion"></i>Mg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <figure class="fig">
+      <img src="static/images/teaser.png" alt="Overview of ComplexMPNN">
+      <figcaption><b>a</b>, A hierarchical encoder represents residue contacts, chain fragments and ligand and metal-ion context. A coupled flow decoder turns that representation and the current sequence into amino-acid or nucleotide probabilities, from every designable position masked at <i>t</i>&nbsp;=&nbsp;0 to a complete sequence at <i>t</i>&nbsp;=&nbsp;1, revising earlier choices along the way. <b>b</b>, One complex, human SRP19 bound to helix 6 of SRP RNA (PDB 1JID), under four design masks: the protein, the RNA, both chains, or individual sites. Blue marks designable positions, gray fixed ones, and the orange spheres are two magnesium ions given as context.</figcaption>
+    </figure>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop reveal">
+    <h2 class="sec-title">Abstract</h2>
+    <p class="lead">Inverse folding uses a target biomolecular structure to design sequences that can fold into it. In complexes, sequence design also needs to account for interactions between components. Here we present ComplexMPNN, a unified model for protein, RNA and DNA inverse folding. Its hierarchical encoder integrates structural and chemical information across the complex, and its coupled flow decoder refines sequences at selected positions. It can design individual chains or multiple components together and complete partially specified sequences. Across monomer and complex benchmarks, ComplexMPNN improves sequence recovery and refolding performance. Context analyses show that its predictions respond to partner sequences and local chemistry. Experimental tests identified rhodopsin designs with pigmentation indicating successful expression and zinc-finger designs with DNA-binding activity. By allowing interacting proteins and nucleic acids to be designed together, ComplexMPNN provides a basis for developing new recognition pairs for gene regulation.</p>
+  </div>
+</section>
+
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <h2 class="sec-title">Results</h2>
+    <p class="lead">One model is evaluated on protein, RNA and DNA monomers, on protein&ndash;protein complexes and on both directions of protein&ndash;nucleic-acid design, against specialized methods retrained on the same training set. Designs are refolded with AlphaFold3, without multiple-sequence alignments or structural templates, and compared with the target structures.</p>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <p class="lead">On monomers, ComplexMPNN reached higher sequence recovery than the protein-specific methods across all three length groups, and the refolding success rate on long proteins was 32.0 per cent against 22.2 for PiFold. On RNA it reached higher recovery than RDesign, gRNAde and RhoDesign, with lower RMSD and higher TM-scores; on DNA, higher recovery and a higher refolding success rate than StructGNN, GraphTrans and PiFold.</p>
+    <figure class="fig">
+      <img src="static/images/monomer_performance.png" alt="Monomer sequence design">
+      <figcaption><b>Monomer sequence design.</b> Sequence recovery on the protein, RNA and DNA benchmarks (1,340, 54 and 23 targets), and RMSD, TM-score and refolding success rate for the designs after AlphaFold3 refolding. ComplexMPNN-Monomer is the same architecture trained on one molecular type instead of all three.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <p class="lead">In protein&ndash;protein complexes, with all protein chains designed together, recovery was about 3 percentage points higher than ProteinMPNN retrained on the same chains, with TM-score and RMSD improving as well. Against LigandMPNN, with the nucleic acid fixed, recovery was comparable and refolding more accurate: on the subset whose native-sequence predictions reach ipTM&nbsp;&ge;&nbsp;0.6, median RMSD was 1.05&nbsp;&Aring; against 1.44. Designing the RNA instead, with the protein fixed, beat gRNAde overall and every method at 100 nucleotides or more.</p>
+    <figure class="fig">
+      <img src="static/images/complex-figure.png" alt="Sequence design in biomolecular complexes">
+      <figcaption><b>Sequence design in biomolecular complexes.</b> <b>a</b>&ndash;<b>c</b>, Protein&ndash;protein complexes. <b>d</b>&ndash;<b>f</b>, Protein design with the nucleic acid fixed, on both test sets. <b>g</b>,&nbsp;<b>h</b>, RNA design with the protein fixed; RhoDesign and gRNAde read the RNA alone.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <p class="lead">What the partner contributes is local. Removing it costs the most recovery at the residues closest to it; shuffling the nucleotide identities while keeping the coordinates costs 2.9 percentage points within 3&nbsp;&Aring; and 1.2 across the 5&nbsp;&Aring; interface. Providing magnesium raises the predicted proportion of Asp and Glu nearby, and providing zinc raises His and Cys.</p>
+    <figure class="fig">
+      <img src="static/images/complex-case.png" alt="Molecular context and case studies of complex design">
+      <figcaption><b>Molecular context and case studies.</b> Distance to the partner (<b>a</b>), pretraining on the other nucleic acid (<b>b</b>), predicted composition near magnesium and zinc (<b>c</b>) and at the nucleic-acid interface (<b>d</b>,&nbsp;<b>e</b>), and two designs refolded beside their native complexes, ToxR&ndash;DNA and an ancestral Dicer&ndash;RNA (<b>f</b>,&nbsp;<b>g</b>).</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <h2 class="sec-title">Experiments</h2>
+    <p class="lead">Five of 20 microbial rhodopsin designs produced distinctly pigmented pellets against the empty-vector control, from three templates and at 69 to 74 per cent global identity to those templates. The positive designs kept the retinal-binding lysine and the conserved motif in the third transmembrane helix.</p>
+    <figure class="fig">
+      <img src="static/images/rhodopsin.png" alt="Experimental validation of generated microbial rhodopsins">
+      <figcaption><b>Microbial rhodopsin designs.</b> The design and screening workflow (<b>a</b>), the pellets (<b>b</b>), the conserved motifs in the third and seventh transmembrane helices (<b>c</b>), and where the designs sit among reference sequences (<b>d</b>).</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <p class="lead">The ZIF268 protein was redesigned with its DNA duplex and the three structural zinc ions held fixed. All four selected designs were expressed and purified, and two of them, pred14 and pred4, shifted the target probe in an electrophoretic mobility shift assay.</p>
+    <figure class="fig">
+      <img src="static/images/zincfinger.png" alt="Purification and EMSA validation of designed zinc-finger proteins">
+      <figcaption><b>Designed zinc-finger proteins.</b> Purification of the four designs (<b>a</b>&ndash;<b>d</b>), native ZIF268 as a positive control (<b>e</b>), the initial EMSA screen (<b>f</b>), and titrations of the two designs that shifted the probe (<b>g</b>).</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container is-max-desktop reveal">
+    <h2 class="sec-title">Get started</h2>
+<pre class="code"><code>git clone https://github.com/OpenRaiser/ComplexMPNN.git
+cd ComplexMPNN
+pip install -r requirements.txt
+
+python complexmpnn/design.py \
+  --input examples/1jid.pdb --out_dir out/design \
+  --ckpt weights/complexmpnn.pt \
+  --design_types protein \
+  --temperature 0.1 --flow-steps 50 --seed 111</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container is-max-desktop has-text-centered">
+    <p>Page layout after the <a href="https://nerfies.github.io">Nerfies</a> project page template, used under
+      <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    items.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+<script>
+(function () {
+  var root = document.getElementById('flowdemo');
+  if (!root) return;
+  var NP = 114, NN = 26;  // the protein and the RNA of 1JID
+  var AA = 'ACDEFGHIKLMNPQRSTVWY', NT = 'ACGU';
+  var NS = 'http://www.w3.org/2000/svg';
+  var tEl = document.getElementById('flow-t'),
+      doneEl = document.getElementById('flow-done'), totEl = document.getElementById('flow-tot');
+
+  // One state array drives the structure and the sequence alike, so a residue
+  // lighting up and its letter appearing are the same event.
+  // 0 masked, 1 filled this step, 2 filled, 3 masked again.
+  var tracks = [
+    { el: document.getElementById('flow-p'), n: NP, alpha: AA },
+    { el: document.getElementById('flow-n'), n: NN, alpha: NT }
+  ];
+  var total = 0;
+  tracks.forEach(function (tr) {
+    tr.state = []; tr.letter = []; tr.cells = [];
+    for (var i = 0; i < tr.n; i++) {
+      tr.state.push(0); tr.letter.push('');
+      var b = document.createElement('b'); tr.el.appendChild(b); tr.cells.push(b);
+    }
+    total += tr.n;
+  });
+  totEl.textContent = total;
+
+  var DOT = ['#ffffff', '#3b5bc4', '#8793a5', '#b16c4a'];
+  var RIM = ['#dfe4ea', '#2b47a4', '#8793a5', '#b16c4a'];
+
+  /* ------------------------------------------------------------ frames */
+
+  // Thirteen frames rendered in PyMOL with Fig. 1's own style and palette, a
+  // growing share of the assembly coloured as designed. They are stacked and
+  // cross-faded rather than swapped on one img, so nothing flashes while a
+  // frame is fetched.
+  var NFRAME = 13, frames = [], shown = -1;
+  var box = document.getElementById('flow-struct');
+  for (var i = 0; i < NFRAME; i++) {
+    var im = document.createElement('img');
+    im.src = 'static/images/zf' + (i < 10 ? '0' : '') + i + '.png';
+    im.alt = i ? '' : 'SRP19 bound to helix 6 of SRP RNA, with its two magnesium ions';
+    box.appendChild(im);
+    frames.push(im);
+  }
+
+  function showFrame(done) {
+    var k = Math.max(0, Math.min(NFRAME - 1, Math.round(done / total * (NFRAME - 1))));
+    if (k === shown) return;
+    if (shown >= 0) frames[shown].className = '';
+    frames[k].className = 'on';
+    shown = k;
+  }
+
+  /* ----------------------------------------------------------- the loop */
+
+  var STEPS = 16, timer = null;
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function paintCells() {
+    var nm = ['', 'new', 'set', 're'];
+    tracks.forEach(function (tr) {
+      tr.state.forEach(function (st, i) {
+        tr.cells[i].className = nm[st];
+        tr.cells[i].textContent = st ? tr.letter[i] : '';
+      });
+    });
+  }
+  function reset() {
+    tracks.forEach(function (tr) {
+      tr.state = tr.state.map(function () { return 0; });
+      tr.letter = tr.letter.map(function () { return ''; });
+    });
+    tEl.textContent = '0.00'; doneEl.textContent = '0';
+    paintCells(); showFrame(0);
+  }
+  function step(k) {
+    var t = k / STEPS, done = 0;
+    tracks.forEach(function (tr) {
+      tr.state = tr.state.map(function (st, i) {
+        if (st === 1) return 2;
+        if (st === 3) { tr.letter[i] = ''; return 0; }
+        return st;
+      });
+      if (k > 1 && k < STEPS - 1) {
+        var set = [];
+        tr.state.forEach(function (st, i) { if (st === 2) set.push(i); });
+        shuffle(set).slice(0, Math.max(1, Math.round(tr.state.length * 0.06)))
+          .forEach(function (i) { tr.state[i] = 3; });
+      }
+      var open = [];
+      tr.state.forEach(function (st, i) { if (st === 0) open.push(i); });
+      var take = Math.max(1, Math.round(open.length * (0.11 + 0.52 * t)));
+      if (k >= STEPS) take = open.length;
+      shuffle(open).slice(0, take).forEach(function (i) {
+        tr.letter[i] = pick(tr.alpha); tr.state[i] = 1;
+      });
+      tr.state.forEach(function (st) { if (st === 1 || st === 2) done++; });
+    });
+    tEl.textContent = t.toFixed(2);
+    doneEl.textContent = done; paintCells(); showFrame(done);
+  }
+  function run() {
+    reset(); var k = 0;
+    timer = setInterval(function () {
+      step(++k);
+      if (k >= STEPS) { clearInterval(timer); timer = setTimeout(run, 2600); }
+    }, 700);
+  }
+  function settle() {
+    tracks.forEach(function (tr) {
+      tr.state = tr.state.map(function () { return 2; });
+      tr.letter = tr.letter.map(function () { return pick(tr.alpha); });
+    });
+    tEl.textContent = '1.00'; doneEl.textContent = total;
+    paintCells(); showFrame(total);
+  }
+  root.__step = step; root.__reset = reset; root.__settle = settle;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { settle(); return; }
+  showFrame(0);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { if (!timer) run(); }
+        else { clearInterval(timer); clearTimeout(timer); timer = null; }
+      });
+    }, { threshold: 0.15 }).observe(root);
+  } else { run(); }
+})();
+</script>
+</body>
+</html>

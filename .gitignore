@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Checkpoints and outputs are not source.
+weights/*
+ckpts/
+*.pt
+*.ckpt
+out/
+logs/
+
+# Except the released weights, which ship with the code.
+!weights/complexmpnn.pt
